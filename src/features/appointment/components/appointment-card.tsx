@@ -3,7 +3,6 @@ import React from 'react';
 import {
   CardActions, Typography, styled, CardContent, Button,
 } from '@mui/material';
-import moment from 'moment';
 
 import { IAppointment } from '../types';
 
@@ -22,17 +21,13 @@ export function AppointmentCard({ appointment, handleClick }:AppointmentProps) {
     <CardStyle>
       <CardContentStyle>
         <Typography variant="h6">
-          {moment(appointment.date).format('LL')}
+          {`${appointment.startTime}`}
+        </Typography>
+        <Typography variant="h6">
+          {`${appointment.date}`}
         </Typography>
         <Typography variant="body2">
           {`Количество персон: ${appointment.capacity}`}
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{ fontWeight: '700', textTransform: 'lowercase' }}
-        >
-          {`Длительность: ${appointment.duration}`}
-
         </Typography>
       </CardContentStyle>
       <CardActionsStyle>

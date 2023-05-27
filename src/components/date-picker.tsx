@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Box } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -7,20 +7,40 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 
+import { IAppointment } from '~/features/appointment';
+import { useAppSelector } from '~/store';
+
 interface Props{
-  defaultValue: string
-  setEditedDate: React.Dispatch<React.SetStateAction<dayjs.Dayjs | null>>
+  defaultValue: string,
+  setDateAppointments: React.Dispatch<React.SetStateAction<IAppointment[] >>,
 }
 
-export function DatePicker({ defaultValue, setEditedDate }:Props) {
+export function DatePicker({ defaultValue, setDateAppointments }:Props) {
+  const appointments = useAppSelector((state) => state.appointmentSlice.appointments);
+  useEffect(() => {
+    setDateAppointments(getDateAppointments(defaultValue));
+  }, []);
+
+  const handleChange = (newValue: dayjs.Dayjs | null) => {
+    if (newValue) {
+      setDateAppointments(getDateAppointments(newValue.format('YYYY-MM-DD')));
+    }
+  };
+
+  const getDateAppointments = (date: string): IAppointment[] => appointments
+    .filter((appointment) => {
+      const appointmentDate = dayjs(appointment.date).format('YYYY-MM-DD');
+      return appointmentDate === date;
+    });
+
   return (
-    <Box sx={{ }}>
+    <Box>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DemoContainer components={['DatePicker']}>
           <Picker
             label="Выберите дату"
             defaultValue={dayjs(defaultValue)}
-            onChange={(newValue) => setEditedDate(newValue)}
+            onChange={handleChange}
             minDate={dayjs()}
             sx={{
               zIndex: 100000,

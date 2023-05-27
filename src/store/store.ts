@@ -10,7 +10,6 @@ import {
   appointmentSlice,
 } from '~/features/appointment';
 import { authReducer, authSlice } from '~/features/auth';
-import { cartReducer, cartSlice } from '~/features/cart';
 
 import { RESET_STATE_ACTION_TYPE } from './actions/resetState';
 import { rtkQueryErrorLogger } from './middlewares/rtkQueryErrorLogger';
@@ -18,7 +17,6 @@ import { usersSlice, usersReducer } from './users-slice';
 
 const reducers = {
   [authSlice.name]: authReducer,
-  [cartSlice.name]: cartReducer,
   [usersSlice.name]: usersReducer,
   [appointmentSlice.name]: appointmentReducer,
 

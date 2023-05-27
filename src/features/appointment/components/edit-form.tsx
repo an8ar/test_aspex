@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
-import { Stack, Typography, styled } from '@mui/material';
-import { Dayjs } from 'dayjs';
-import moment from 'moment';
+import {
+  Stack, styled, Button,
+} from '@mui/material';
 
+import { getAppointments } from '~/api/appointment/appointmentApi';
 import { DatePicker } from '~/components/date-picker';
-import { TimePicker } from '~/components/time-picker';
+import { CapacityTabs } from '~/features/table';
 
 import { IAppointment } from '../types';
 
@@ -14,28 +15,27 @@ appointment: IAppointment
 }
 
 export function EditForm({ appointment }:Props) {
-  const date = moment(appointment.date).format('MM/DD/YYYY');
-  const hours = moment(appointment.date).format('LLL');
+  const [dateAppointments, setDateAppointments] = useState<IAppointment[]>([]);
+  console.log(dateAppointments);
+  const handleReBook = async () => {
+    const appointments = await getAppointments();
+    console.log(appointments);
+  };
 
-  const [editedDate, setEditedDate] = useState<Dayjs|null>(null);
-
-  const [editTime, setEditTime] = useState<Dayjs|null>(null);
-  console.log(editedDate, editTime);
   return (
-    <Stack spacing={2}>
-      <Typography>
-        {date}
-        {hours}
-      </Typography>
+    <Stack spacing={2} sx={{ justifyContent: 'center' }}>
 
       <DatePickerStyle
         defaultValue={appointment.date}
-        setEditedDate={setEditedDate}
+        setDateAppointments={setDateAppointments}
       />
-      <TimePicker
-        defaultValue={appointment.date}
-        setEditTime={setEditTime}
-      />
+      <CapacityTabs appointments={dateAppointments} />
+
+      <Button
+        onClick={handleReBook}
+      >
+        Перебронировать
+      </Button>
 
     </Stack>
   );

@@ -1,11 +1,11 @@
 export interface IAppointment {
     date: string;
+    startTime: string;
     tableId: number;
     appointmentId: number;
     clientLogin: string;
-    duration: number;
     capacity: number;
-}
+  }
 
 export interface Table {
     tableId: number;
