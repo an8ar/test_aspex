@@ -1,68 +1,69 @@
 import React, { useState } from 'react';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 
-import { BottomDrawer } from '~/components/bottom-drawer';
-import { DialogForm } from '~/components/Dialog';
-import { UserAppointments, IAppointment, AppointmentEdit } from '~/features/appointment';
-import { useResponsive } from '~/hooks/useResponsive';
+import { UserAppointments, IAppointment } from '~/features/appointment';
 import { useAppSelector } from '~/store';
+
+import { ModalCreate } from './modal-create';
+import { ModalEdit } from './modal-edit';
 
 export function Dashboard() {
   const user = useAppSelector((state) => state.authSlice.user);
 
-  const [openModal, setOpenModal] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openCreate, setOpenCreate] = useState(false);
+
   const [modalAppointment, setModalAppointment] = useState<IAppointment|null>(null);
-  const isMobile = useResponsive('down', 'sm');
-  const handleClose = () => {
-    setOpenModal(false);
-    setModalAppointment(null);
+
+  const handleClick = (appointment:IAppointment) => {
+    setOpenEdit(true);
+    setModalAppointment(appointment);
   };
 
-  const handleOpen = () => {
-    setOpenModal(true);
+  const handleClose = (type: 'edit'| 'create') => {
+    if (type === 'edit') {
+      setOpenEdit(false);
+      setModalAppointment(null);
+    } else {
+      setOpenCreate(false);
+    }
+    setOpenEdit(false);
+    setModalAppointment(null);
   };
-  const handleClick = (appointment:IAppointment) => {
-    setOpenModal(true);
-    setModalAppointment(appointment);
+  const handleOpen = (type: 'edit'| 'create') => {
+    if (type === 'edit') {
+      setOpenEdit(true);
+    } else {
+      setOpenCreate(true);
+    }
   };
 
   return (
     <Box>
-      <Typography variant="h5">
-        Пользователь:
-        {user?.login}
-      </Typography>
-      <Typography variant="body2">
-        Текущие бронирования
-      </Typography>
-      <UserAppointments handleClick={handleClick} />
-      {isMobile
-        ? (
-          <BottomDrawer
-            onClose={handleClose}
-            onOpen={handleOpen}
-            title="Редактировать бронирование"
-            hasCloser
-            open={openModal}
-            fullHeight
-          >
-            {modalAppointment?.clientLogin }
-            {modalAppointment && <AppointmentEdit appointment={modalAppointment} />}
+      <Box sx={{ display: 'flex' }}>
+        <Box sx={{ flexGrow: 1 }}>
+          <Typography variant="h5">
+            Пользователь:
+            {user?.login}
+          </Typography>
+          <Typography variant="body2">
+            Текущие бронирования
+          </Typography>
+        </Box>
+        <Button onClick={() => setOpenCreate(true)}>Добавить</Button>
+      </Box>
 
-          </BottomDrawer>
-        ) : (
-          <DialogForm
-            open={openModal}
-            title="Редактировать бронирование"
-            hasCloser
-            onClose={handleClose}
-            onOpen={handleOpen}
-          >
-            {modalAppointment?.clientLogin }
-            {modalAppointment && <AppointmentEdit appointment={modalAppointment} />}
-          </DialogForm>
-        )}
+      <UserAppointments handleClick={handleClick} />
+      {modalAppointment && (
+      <ModalEdit
+        open={openEdit}
+        modalAppointment={modalAppointment}
+        handleClose={handleClose}
+        handleOpen={handleOpen}
+      />
+      )}
+      <ModalCreate open={openCreate} handleClose={handleClose} handleOpen={handleOpen} />
 
     </Box>
   );

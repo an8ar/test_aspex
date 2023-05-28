@@ -4,23 +4,20 @@ export const APPOINTMENTS: IAppointment[] = [
   {
     date: '2023-05-28',
     startTime: '14:00',
-    tableId: 1,
     appointmentId: 123,
     clientLogin: 'an8ar',
-    capacity: 3,
+    capacity: 2,
   },
   {
     date: '2023-05-27',
     startTime: '15:00',
-    tableId: 2,
-    appointmentId: 456,
+    appointmentId: 124,
     clientLogin: 'janedoe',
     capacity: 2,
   },
   {
     date: '2023-05-27',
     startTime: '12:00',
-    tableId: 3,
     appointmentId: 213,
     clientLogin: 'an8ar',
     capacity: 2,
@@ -28,25 +25,24 @@ export const APPOINTMENTS: IAppointment[] = [
   {
     date: '2023-05-27',
     startTime: '18:00',
-    tableId: 4,
     appointmentId: 987,
     clientLogin: 'an8ar',
-    capacity: 3,
+    capacity: 2,
   },
   {
     date: '2023-05-28',
     startTime: '16:00',
-    tableId: 9,
     appointmentId: 789,
     clientLogin: 'an8ar',
-    capacity: 5,
+    capacity: 2,
   },
   {
     date: '2023-05-28',
     startTime: '13:00',
-    tableId: 10,
     appointmentId: 456,
     clientLogin: 'an8ar',
     capacity: 2,
   },
 ];
+
+export const APPOINTMENT_IDS = [123, 124, 213, 987, 789, 456];

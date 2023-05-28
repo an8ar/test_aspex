@@ -18,7 +18,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(12, 0),
 }));
 
-export function SignUpPage() {
+export function RegisterPage() {
   return (
     <Page title="signup">
       <Container>

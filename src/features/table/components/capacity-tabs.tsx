@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Chip } from '@mui/material';
+import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
@@ -17,26 +17,44 @@ function a11yProps(index: number) {
 }
 
 interface TabsProps {
-    appointments: IAppointment[]
+    appointments: IAppointment[],
+    time: string,
+    setAppointmentTime: React.Dispatch<React.SetStateAction<string>>,
+    setAppointmentCapacity: React.Dispatch<React.SetStateAction<number>>
 }
 
-export function CapacityTabs({ appointments }: TabsProps) {
+export function CapacityTabs({
+  appointments,
+  setAppointmentTime, setAppointmentCapacity, time,
+}: TabsProps) {
   const [tabIndex, setTabIndex] = useState(0);
 
   const [availableSlots, setAvailableSlots] = useState<{time: string}[]>([]);
 
+  useEffect(() => {
+    changeAvailableSlots(tabIndex);
+  }, [appointments]);
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    changeAvailableSlots(newValue);
+    setAppointmentCapacity(TABLE_CAPACITIES[newValue]);
+  };
+
+  const changeAvailableSlots = (index:number) => {
     const capacityAppointments = appointments
-      .filter((appointment) => appointment.capacity === TABLE_CAPACITIES[newValue]);
+      .filter((appointment) => appointment.capacity === TABLE_CAPACITIES[index]);
     const available = TIME_SLOTS
       .filter((timeSlot) => !capacityAppointments
         .some((appointment) => appointment.startTime === timeSlot.time));
 
-    setTabIndex(newValue);
+    setTabIndex(index);
 
     setAvailableSlots(available);
   };
 
+  const handleClick = (itemTime: string) => {
+    setAppointmentTime(itemTime);
+  };
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -64,10 +82,14 @@ export function CapacityTabs({ appointments }: TabsProps) {
             key={`${capacity}-capacity-table- info`}
           >
             {availableSlots ? availableSlots.map((item) => (
-              <Chip
-                label={item.time}
-                key={`chip-for-slot${item.time}`}
-              />
+              <Button
+                key={`button-for-${item.time}`}
+                variant={time === item.time ? 'contained' : 'outlined'}
+                onClick={() => handleClick(item.time)}
+              >
+                {item.time}
+              </Button>
+
             ))
               : <Typography>Нету мест</Typography>}
           </TabPanel>
@@ -98,7 +120,10 @@ function TabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-      <Box sx={{ p: 3 }}>
+      <Box sx={{
+        display: 'flex', flexWrap: 'wrap', gap: 2, m: 1,
+      }}
+      >
         {children}
       </Box>
       )}

@@ -1,9 +1,13 @@
 import React from 'react';
 
 import {
-  CardActions, Typography, styled, CardContent, Button,
+  CardActions, Typography, styled, CardContent, Button, Box,
 } from '@mui/material';
+import { toast } from 'react-toastify';
 
+import { useAppDispatch } from '~/store';
+
+import { deleteAppointment } from '../appoitment-slice';
 import { IAppointment } from '../types';
 
 interface AppointmentProps{
@@ -12,26 +16,38 @@ interface AppointmentProps{
 }
 
 export function AppointmentCard({ appointment, handleClick }:AppointmentProps) {
+  const dispatch = useAppDispatch();
+
   const handleEdit = () => {
     handleClick(appointment);
+  };
+  const handleDelete = () => {
+    dispatch(deleteAppointment(appointment));
+    toast.success('Бронирование успешно удалилось');
   };
 
   return (
 
     <CardStyle>
       <CardContentStyle>
-        <Typography variant="h6">
-          {`${appointment.startTime}`}
-        </Typography>
-        <Typography variant="h6">
-          {`${appointment.date}`}
-        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+          <Typography variant="h6">
+            {`Дата: ${appointment.date}`}
+          </Typography>
+          <Typography variant="h6">
+            {`Время: ${appointment.startTime}`}
+          </Typography>
+        </Box>
         <Typography variant="body2">
-          {`Количество персон: ${appointment.capacity}`}
+          {`Cтолик на: ${appointment.capacity}`}
         </Typography>
       </CardContentStyle>
       <CardActionsStyle>
-        <Button sx={{ color: 'black' }} onClick={handleEdit}>Редактировать</Button>
+        <Box>
+          <Button sx={{ color: 'black' }} onClick={handleEdit}>Редактировать</Button>
+          <Button sx={{ color: 'red' }} onClick={handleDelete}>Удалить</Button>
+
+        </Box>
       </CardActionsStyle>
     </CardStyle>
 
@@ -40,21 +56,19 @@ export function AppointmentCard({ appointment, handleClick }:AppointmentProps) {
 
 const CardActionsStyle = styled(CardActions)({
   display: 'flex',
-  padding: '24px',
-  gap: 1,
   justifyContent: 'flex-end',
 });
 
 const CardContentStyle = styled(CardContent)(({ theme }) => ({
   display: 'grid',
-  gap: theme.spacing(2),
+  gap: theme.spacing(1),
 }));
 
 const CardStyle = styled(CardContent)(({ theme }) => ({
   minWidth: '100%',
   backgroundColor: theme.palette.common.white,
   borderRadius: theme.spacing(2),
-  padding: 0,
+  padding: theme.spacing(1),
   [theme.breakpoints.up('sm')]: {
     minWidth: theme.spacing(66),
   },

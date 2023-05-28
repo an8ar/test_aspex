@@ -13,9 +13,10 @@ import { useAppSelector } from '~/store';
 interface Props{
   defaultValue: string,
   setDateAppointments: React.Dispatch<React.SetStateAction<IAppointment[] >>,
+  setAppointmentDate: React.Dispatch<React.SetStateAction<string>>
 }
 
-export function DatePicker({ defaultValue, setDateAppointments }:Props) {
+export function DatePicker({ defaultValue, setDateAppointments, setAppointmentDate }:Props) {
   const appointments = useAppSelector((state) => state.appointmentSlice.appointments);
   useEffect(() => {
     setDateAppointments(getDateAppointments(defaultValue));
@@ -27,11 +28,11 @@ export function DatePicker({ defaultValue, setDateAppointments }:Props) {
     }
   };
 
-  const getDateAppointments = (date: string): IAppointment[] => appointments
-    .filter((appointment) => {
-      const appointmentDate = dayjs(appointment.date).format('YYYY-MM-DD');
-      return appointmentDate === date;
-    });
+  const getDateAppointments = (date: string): IAppointment[] => {
+    setAppointmentDate(date);
+    return appointments
+      .filter((appointment) => dayjs(appointment.date).format('YYYY-MM-DD') === date);
+  };
 
   return (
     <Box>

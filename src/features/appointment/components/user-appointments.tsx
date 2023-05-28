@@ -21,7 +21,6 @@ export function UserAppointments({ handleClick }:Props) {
 
   return (
     <BoxStyle>
-      {' '}
       {userAppointments
         ? userAppointments.map((appointment) => (
           <AppointmentCard
@@ -38,11 +37,8 @@ export function UserAppointments({ handleClick }:Props) {
 
 const BoxStyle = styled(Box)(({ theme }) => ({
   display: 'flex',
-  gap: theme.spacing(3),
-  justifyContent: 'center',
+  gap: theme.spacing(2),
+  justifyContent: 'flex-start',
   flexWrap: 'wrap',
-  padding: theme.spacing(2),
-  '&:last-child': {
-    paddingBottom: theme.spacing(2),
-  },
+  padding: theme.spacing(1),
 }));

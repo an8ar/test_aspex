@@ -1,21 +1,10 @@
 import React from 'react';
 
-import { Container, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Container, Typography } from '@mui/material';
 
 import { Page } from '~/components/Page';
-import { useAppSelector } from '~/store';
 
 export function HomePage() {
-  const navigate = useNavigate();
-  const users = useAppSelector((state) => state.usersSlice.users);
-  const handleLogin = () => {
-    navigate('/login');
-  };
-  const handleSignUp = () => {
-    navigate('/signup');
-  };
-
   return (
     <Page title="Homepage">
       <Container sx={{
@@ -24,10 +13,18 @@ export function HomePage() {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
+        alignItems: 'flex-start',
       }}
       >
-        <Button variant="outlined" onClick={handleLogin}>Логин</Button>
-        <Button onClick={handleSignUp}>Регистрация</Button>
+        <Typography variant="h4">
+          Онлайн бронирование столиков ресторана
+        </Typography>
+        <Typography variant="h6">
+          Для бронирования войдите или зарегестрируйтесь
+        </Typography>
+        <Typography variant="body1">
+          зарегестрируйтесь по логину an8ar, будут сразу доступны некоторые брони
+        </Typography>
 
       </Container>
     </Page>
