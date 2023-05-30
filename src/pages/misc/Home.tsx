@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Container, Typography } from '@mui/material';
 
-import { Page } from '~/components/Page';
+import { Page } from '~/components/page';
 
 export function HomePage() {
   return (

@@ -4,7 +4,7 @@ import {
   Box, IconButton, styled, SwipeableDrawer, SwipeableDrawerProps, Typography,
 } from '@mui/material';
 
-import { Iconify } from './Iconify';
+import { Iconify } from './iconify';
 
 type Props = Omit<SwipeableDrawerProps, 'onOpen'> & {
   children?: React.ReactNode;

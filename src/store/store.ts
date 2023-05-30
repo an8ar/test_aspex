@@ -4,6 +4,7 @@ import {
   FLUSH, PAUSE, PERSIST, persistStore, PURGE, REGISTER, REHYDRATE,
 } from 'redux-persist';
 
+import appointmentApi, { APPOINTMENT_API_REDUCER_KEY } from '~/api/appointment/api';
 import authApi, { AUTH_API_REDUCER_KEY } from '~/api/auth/api';
 import {
   appointmentReducer,
@@ -19,7 +20,7 @@ const reducers = {
   [authSlice.name]: authReducer,
   [usersSlice.name]: usersReducer,
   [appointmentSlice.name]: appointmentReducer,
-
+  [APPOINTMENT_API_REDUCER_KEY]: appointmentApi.reducer,
   [AUTH_API_REDUCER_KEY]: authApi.reducer,
 
 };
@@ -41,7 +42,7 @@ export const store = configureStore({
     serializableCheck: {
       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
     },
-  }).concat([authApi.middleware,
+  }).concat([authApi.middleware, appointmentApi.middleware,
     rtkQueryErrorLogger,
   ]),
 });

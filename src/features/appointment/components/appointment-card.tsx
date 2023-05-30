@@ -12,14 +12,14 @@ import { IAppointment } from '../types';
 
 interface AppointmentProps{
     appointment: IAppointment
-    handleClick: (appointment: IAppointment)=> void
+    handleEditClick: (appointment: IAppointment)=> void
 }
 
-export function AppointmentCard({ appointment, handleClick }:AppointmentProps) {
+export function AppointmentCard({ appointment, handleEditClick }:AppointmentProps) {
   const dispatch = useAppDispatch();
 
   const handleEdit = () => {
-    handleClick(appointment);
+    handleEditClick(appointment);
   };
   const handleDelete = () => {
     dispatch(deleteAppointment(appointment));

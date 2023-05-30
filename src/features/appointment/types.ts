@@ -1,7 +1,7 @@
 export interface IAppointment {
     date: string;
     startTime: string;
-    appointmentId: number;
+    id: number;
     clientLogin: string;
     capacity: number;
   }

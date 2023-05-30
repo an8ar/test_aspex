@@ -3,19 +3,17 @@ import { toast } from 'react-toastify';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import { APPOINTMENTS, APPOINTMENT_IDS } from '~/constants';
-import { getRandomNumber } from '~/utils/getRandomNumber';
+import appointmentApi from '~/api/appointment/api';
+import { getRandomNumber } from '~/utils/get-random-number';
 
 import { IAppointment } from './types';
 
 interface ISliceState {
   appointments: IAppointment[];
-  appointmentIds: number[]
 }
 
 const initialState: ISliceState = {
-  appointments: APPOINTMENTS,
-  appointmentIds: APPOINTMENT_IDS,
+  appointments: [],
 };
 
 export const appointmentSlice = createSlice({
@@ -25,29 +23,36 @@ export const appointmentSlice = createSlice({
     makeAppointment(state, action: PayloadAction<Omit<IAppointment, 'appointmentId'>>) {
       while (true) {
         const randomId = getRandomNumber(0, 10000);
-        if (!state.appointmentIds.includes(randomId)) {
-          state.appointmentIds.push(randomId);
-          state.appointments.push({ ...action.payload, appointmentId: randomId });
+        const idExists = state.appointments.some((appointment) => appointment.id === randomId);
+        if (!idExists) {
+          state.appointments.push({ ...action.payload, id: randomId });
           break;
         }
       }
     },
     updateAppointment(state, action: PayloadAction<IAppointment>) {
-      const target = state.appointments
-        .findIndex((appointment) => appointment.appointmentId === action.payload.appointmentId);
-      if (target >= 0) {
-        state.appointments[target] = action.payload;
-      } else {
+      const appointmentIndex = state.appointments
+        .findIndex((appointment) => appointment.id === action.payload.id);
+      if (appointmentIndex === -1) {
         toast.info('Резерв не найден');
+      } else {
+        state.appointments[appointmentIndex] = action.payload;
       }
     },
     deleteAppointment(state, action: PayloadAction<IAppointment>) {
       state.appointments = state.appointments
-        .filter((appointment) => appointment.appointmentId !== action.payload.appointmentId);
-      state.appointmentIds = state.appointmentIds
-        .filter((id) => id !== action.payload.appointmentId);
+        .filter((appointment) => appointment.id !== action.payload.id);
     },
-
+  },
+  extraReducers: (build) => {
+    build.addMatcher(
+      appointmentApi.endpoints.getAppointments.matchFulfilled,
+      (state, { payload }) => {
+        if (state.appointments.length === 0) {
+          state.appointments = payload;
+        }
+      },
+    );
   },
 });
 

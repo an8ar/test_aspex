@@ -1,42 +1,43 @@
 import React, { useState } from 'react';
 
-import { Box, Typography, Button } from '@mui/material';
+import {
+  Box, Typography, Button, CircularProgress,
+} from '@mui/material';
 
+import appointmentApi from '~/api/appointment/api';
 import { UserAppointments, IAppointment } from '~/features/appointment';
 import { useAppSelector } from '~/store';
 
-import { ModalCreate } from './modal-create';
-import { ModalEdit } from './modal-edit';
+import { AppointmentCreateModal } from '../../appointment/components/appointment-create-modal';
+import { AppointmentEditModal } from '../../appointment/components/appointment-edit-modal';
 
 export function Dashboard() {
   const user = useAppSelector((state) => state.authSlice.user);
+
+  const { isLoading } = appointmentApi.endpoints.getAppointments.useQuery();
 
   const [openEdit, setOpenEdit] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
 
   const [modalAppointment, setModalAppointment] = useState<IAppointment|null>(null);
 
-  const handleClick = (appointment:IAppointment) => {
+  const handleEditClick = (appointment:IAppointment) => {
     setOpenEdit(true);
     setModalAppointment(appointment);
   };
 
-  const handleClose = (type: 'edit'| 'create') => {
-    if (type === 'edit') {
-      setOpenEdit(false);
-      setModalAppointment(null);
-    } else {
-      setOpenCreate(false);
-    }
+  const handleCloseCreate = () => {
+    setOpenCreate(false);
+  };
+  const handleCloseEdit = () => {
     setOpenEdit(false);
     setModalAppointment(null);
   };
-  const handleOpen = (type: 'edit'| 'create') => {
-    if (type === 'edit') {
-      setOpenEdit(true);
-    } else {
-      setOpenCreate(true);
-    }
+  const handleOpenEdit = () => {
+    setOpenEdit(true);
+  };
+  const handleOpenCreate = () => {
+    setOpenCreate(true);
   };
 
   return (
@@ -53,17 +54,21 @@ export function Dashboard() {
         </Box>
         <Button onClick={() => setOpenCreate(true)}>Добавить</Button>
       </Box>
-
-      <UserAppointments handleClick={handleClick} />
+      {isLoading ? <CircularProgress />
+        : <UserAppointments handleEditClick={handleEditClick} />}
       {modalAppointment && (
-      <ModalEdit
+      <AppointmentEditModal
         open={openEdit}
         modalAppointment={modalAppointment}
-        handleClose={handleClose}
-        handleOpen={handleOpen}
+        handleClose={handleCloseEdit}
+        handleOpen={handleOpenEdit}
       />
       )}
-      <ModalCreate open={openCreate} handleClose={handleClose} handleOpen={handleOpen} />
+      <AppointmentCreateModal
+        open={openCreate}
+        handleClose={handleCloseCreate}
+        handleOpen={handleOpenCreate}
+      />
 
     </Box>
   );

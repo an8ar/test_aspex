@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { ForbiddenIllustration } from '~/assets';
-import { Page } from '~/components/Page';
+import { Page } from '~/components/page';
 
 const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: 480,

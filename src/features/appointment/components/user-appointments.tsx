@@ -8,10 +8,10 @@ import { IAppointment } from '../types';
 import { AppointmentCard } from './appointment-card';
 
 interface Props {
-  handleClick: (appointment:IAppointment)=>void
+  handleEditClick: (appointment:IAppointment)=>void
 }
 
-export function UserAppointments({ handleClick }:Props) {
+export function UserAppointments({ handleEditClick }:Props) {
   const user = useAppSelector((state) => state.authSlice.user);
 
   const appointments = useAppSelector((state) => state.appointmentSlice.appointments);
@@ -21,12 +21,12 @@ export function UserAppointments({ handleClick }:Props) {
 
   return (
     <BoxStyle>
-      {userAppointments
+      {userAppointments.length > 0
         ? userAppointments.map((appointment) => (
           <AppointmentCard
             appointment={appointment}
-            handleClick={handleClick}
-            key={appointment.appointmentId}
+            handleEditClick={handleEditClick}
+            key={appointment.id}
           />
         ))
         : <Box>No appointments </Box>}

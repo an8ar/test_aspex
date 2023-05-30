@@ -3,19 +3,19 @@ import React from 'react';
 import { Box } from '@mui/material';
 
 import { BottomDrawer } from '~/components/bottom-drawer';
-import { DialogForm } from '~/components/Dialog';
+import { Dialog } from '~/components/dialog';
 import { IAppointment, AppointmentEdit } from '~/features/appointment';
 import { useResponsive } from '~/hooks/useResponsive';
 
 interface Props {
-    handleClose: (type: 'edit'| 'create')=>void,
+    handleClose: ()=>void,
     open: boolean
     modalAppointment: IAppointment
-    handleOpen: (type: 'edit'| 'create')=>void,
+    handleOpen: ()=>void,
 
 }
 
-export function ModalEdit({
+export function AppointmentEditModal({
   handleClose, modalAppointment, handleOpen, open,
 }:Props) {
   const isMobile = useResponsive('down', 'sm');
@@ -25,8 +25,8 @@ export function ModalEdit({
       {isMobile
         ? (
           <BottomDrawer
-            onClose={() => handleClose('edit')}
-            onOpen={() => handleOpen('edit')}
+            onClose={handleClose}
+            onOpen={handleOpen}
             title="Редактировать бронирование"
             hasCloser
             open={open}
@@ -35,28 +35,28 @@ export function ModalEdit({
             {modalAppointment?.clientLogin }
             {modalAppointment && (
               <AppointmentEdit
-                handleClose={() => handleClose('edit')}
+                handleClose={handleClose}
                 appointment={modalAppointment}
               />
             )}
 
           </BottomDrawer>
         ) : (
-          <DialogForm
+          <Dialog
             open={open}
             title="Редактировать бронирование"
             hasCloser
-            onClose={() => handleClose('edit')}
-            onOpen={() => handleOpen('edit')}
+            onClose={handleClose}
+            onOpen={handleOpen}
           >
             {modalAppointment?.clientLogin }
             {modalAppointment && (
               <AppointmentEdit
-                handleClose={() => handleClose('edit')}
+                handleClose={handleClose}
                 appointment={modalAppointment}
               />
             )}
-          </DialogForm>
+          </Dialog>
         )}
     </Box>
   );

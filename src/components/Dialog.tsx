@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  Dialog,
+  Dialog as MuiDialog,
   DialogProps,
   IconButton,
   Typography,
@@ -9,7 +9,7 @@ import {
   Box,
 } from '@mui/material';
 
-import { Iconify } from './Iconify';
+import { Iconify } from './iconify';
 
 type Props = DialogProps & {
   title: string;
@@ -20,7 +20,7 @@ type Props = DialogProps & {
   hasCloser: boolean;
 };
 
-export function DialogForm({
+export function Dialog({
   open, onClose, children, title, onOpen, hasCloser, ...drawerProps
 }: Props) {
   return (
@@ -40,7 +40,7 @@ export function DialogForm({
   );
 }
 
-const DialogStyle = styled(Dialog)(({ theme }) => ({
+const DialogStyle = styled(MuiDialog)(({ theme }) => ({
   padding: theme.spacing(0),
   zIndex: 3,
 }));

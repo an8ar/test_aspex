@@ -3,18 +3,18 @@ import React from 'react';
 import { Box } from '@mui/material';
 
 import { BottomDrawer } from '~/components/bottom-drawer';
-import { DialogForm } from '~/components/Dialog';
+import { Dialog } from '~/components/dialog';
 import { AppointmentCreate } from '~/features/appointment';
 import { useResponsive } from '~/hooks/useResponsive';
 
 interface Props {
-    handleClose: (type: 'edit'| 'create')=>void,
+    handleClose: ()=>void,
     open: boolean
-    handleOpen: (type: 'edit'| 'create')=>void,
+    handleOpen: ()=>void,
 
 }
 
-export function ModalCreate({
+export function AppointmentCreateModal({
   handleClose, handleOpen, open,
 }:Props) {
   const isMobile = useResponsive('down', 'sm');
@@ -24,27 +24,27 @@ export function ModalCreate({
       {isMobile
         ? (
           <BottomDrawer
-            onClose={() => handleClose('create')}
-            onOpen={() => handleOpen('create')}
+            onClose={handleClose}
+            onOpen={handleOpen}
             title="Забронировать столик"
             hasCloser
             open={open}
             fullHeight
           >
-            <AppointmentCreate handleClose={() => handleClose('create')} />
+            <AppointmentCreate handleClose={handleClose} />
 
           </BottomDrawer>
         ) : (
-          <DialogForm
+          <Dialog
             open={open}
             title="Забронировать столик"
             hasCloser
-            onClose={() => handleClose('create')}
-            onOpen={() => handleOpen('create')}
+            onClose={handleClose}
+            onOpen={handleOpen}
           >
-            <AppointmentCreate handleClose={() => handleClose('create')} />
+            <AppointmentCreate handleClose={handleClose} />
 
-          </DialogForm>
+          </Dialog>
         )}
     </Box>
   );

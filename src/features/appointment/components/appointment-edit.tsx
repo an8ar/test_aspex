@@ -26,9 +26,9 @@ export function AppointmentEdit({ appointment, handleClose }:EditProps) {
     setEdit(!edit);
   };
   const handleSubmit = (date:string, startTime: string, capacity: number) => {
-    const { appointmentId, clientLogin } = appointment;
+    const { id, clientLogin } = appointment;
     dispatch(updateAppointment({
-      date, startTime, capacity, appointmentId, clientLogin,
+      date, startTime, capacity, id, clientLogin,
     }));
     handleClose();
   };

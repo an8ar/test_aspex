@@ -4,7 +4,7 @@ import {
   Box, Container, styled, Typography,
 } from '@mui/material';
 
-import { Page } from '~/components/Page';
+import { Page } from '~/components/page';
 import { APPLICATION_NAME } from '~/config';
 import { SignUpForm } from '~/features/auth';
 

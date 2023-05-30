@@ -3,7 +3,7 @@ import React from 'react';
 import { Container } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-import { Page } from '~/components/Page';
+import { Page } from '~/components/page';
 import { Dashboard } from '~/features/dashboard';
 import { useAppSelector } from '~/store';
 

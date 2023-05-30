@@ -4,45 +4,43 @@ export const APPOINTMENTS: IAppointment[] = [
   {
     date: '2023-05-28',
     startTime: '14:00',
-    appointmentId: 123,
+    id: 123,
     clientLogin: 'an8ar',
     capacity: 2,
   },
   {
     date: '2023-05-27',
     startTime: '15:00',
-    appointmentId: 124,
+    id: 124,
     clientLogin: 'janedoe',
     capacity: 2,
   },
   {
     date: '2023-05-27',
     startTime: '12:00',
-    appointmentId: 213,
+    id: 213,
     clientLogin: 'an8ar',
     capacity: 2,
   },
   {
     date: '2023-05-27',
     startTime: '18:00',
-    appointmentId: 987,
+    id: 987,
     clientLogin: 'an8ar',
     capacity: 2,
   },
   {
     date: '2023-05-28',
     startTime: '16:00',
-    appointmentId: 789,
+    id: 789,
     clientLogin: 'an8ar',
     capacity: 2,
   },
   {
     date: '2023-05-28',
     startTime: '13:00',
-    appointmentId: 456,
+    id: 456,
     clientLogin: 'an8ar',
     capacity: 2,
   },
 ];
-
-export const APPOINTMENT_IDS = [123, 124, 213, 987, 789, 456];
